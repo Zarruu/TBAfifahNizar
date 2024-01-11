@@ -96,12 +96,14 @@ class medicineController extends Controller
         //     return response()->(['message' => 'Post not Found'], 404);
         // }
         $medicine->update([
-            'nama' => $request->input('title'),
-            'gejala' => $request->input('gejala'),
-        ]);
-        return response()->json(['message' => 'Post updated successfully']);
-        }
+            $medicine = medicine::where('id', $id)->first();
+            $medicine->nama = $request->get('nama');
+            $medicine->gejala =$request->get('gejala');
 
+            $medicine->update();
+            return redirect()->route('index');
+      ]);
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -110,9 +112,7 @@ class medicineController extends Controller
      */
     public function destroy($id)
     {
-        $medicine->delete();
-
-        // Redirect ke halaman yang sesuai
-        return redirect()->route('index.medicine');
-    }
+        $medicine = Medicine::find($id);
+     $medicine->delete();
+     return redirect()->route('index');
 }
